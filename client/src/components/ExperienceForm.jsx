@@ -1,5 +1,9 @@
-import { Briefcase, Plus, Trash2 } from 'lucide-react'
+import { Briefcase, LoaderCircleIcon, Plus, Trash2 } from 'lucide-react'
 import React from 'react'
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
+import api from '../configs/api';
 
 const ExperienceForm = ({data, onChange}) => {
 
@@ -30,7 +34,24 @@ const ExperienceForm = ({data, onChange}) => {
     }
 
 
+    const { token } = useSelector(state => state.auth)
+    const [isGenetaring, setIsGenerating] = useState(-1)
 
+    const generate_pro = async (index) => {
+        try {
+            setIsGenerating(index)
+            const exp = data[index]
+            const prompt = `enhance my Job description "${exp.description}"`;
+            const response = await api.post('/api/ai/enchance-job-desc',{userContent : prompt}, {headers:{
+                Authorization : token
+            }})
+            updateExperience(index, "description", response.data.enhanceResponces)
+        } catch (error) {
+            toast.error(error.message)
+        }finally{
+            setIsGenerating(-1)
+        }
+    }
 
 
   return (
@@ -78,9 +99,17 @@ const ExperienceForm = ({data, onChange}) => {
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
                                 <h4 className='text-sm font-medium text-gray-700'>Job Description</h4>
-                                <button className='flex items-center gap-1 text-xs text-purple-600 bg-purple-100 px-2 py-1 rounded-lg hover:bg-purple-200 transition-all'>
-                                    <Briefcase className='size-4' />
-                                    AI Enhance
+                                <button onClick={() => generate_pro(index)} className='flex items-center gap-1 text-xs text-purple-600 bg-purple-100 px-2 py-1 rounded-lg hover:bg-purple-200 transition-all'>
+                                    {
+                                        isGenetaring === index ? (
+                                            <LoaderCircleIcon className='size-4 animate-spin'/>
+                                        ) : (
+                                            <Briefcase className='size-4' />
+                                        )
+                                    }
+                                    {
+                                        isGenetaring === index? "Enchaning..." : "AI Enhance"
+                                    }
                                 </button>
                             </div>
                             <textarea rows={4} value={experience.description || ""} onChange={(e) => updateExperience(index, "description", e.target.value)} placeholder='Describe your role and responsibilities' className='w-full p-2 border border-gray-400 text-sm focus:border-blue-500'></textarea>

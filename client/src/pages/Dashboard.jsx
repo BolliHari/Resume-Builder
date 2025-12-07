@@ -62,6 +62,7 @@ const Dashboard = () => {
       navigate(`/app/builder/${data.resumeId}`);
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message)
+      console.log(error?.response?.data?.message || error.message)
     }
     setIsLoading(false)
   }
