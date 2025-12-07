@@ -7,7 +7,6 @@ import resumeRouter from "./routes/resumeRoutes.js";
 import aiRouter from "./routes/aiRoutes.js";
 
 const app = express()
-const PORT = process.env.PORT || 3000;
 await connectDB();
 
 app.use(express.json());
@@ -21,6 +20,7 @@ app.use('/api/resume',resumeRouter)
 app.use('/api/ai', aiRouter)
 
 if(process.env.NODE_ENV !== 'production'){
+    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
         console.log(`server running on http://localhost:${PORT}`)
     }) 
