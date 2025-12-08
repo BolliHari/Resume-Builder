@@ -135,7 +135,7 @@ const ResumeBuilder = () => {
         </Link>
       </div>
       <div className="max-w-7xl mx-auto px-4 pb-8">
-        <div className="grid grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* {Left panel} */}
           <div className="relative lg:col-span-5 rounded-lg overflow-hidden">
             <div className="bg-white border border-slate-200 shadow-sm rounded-lg p-6 pt-1">
@@ -203,7 +203,7 @@ const ResumeBuilder = () => {
             </div>
           </div>
           {/* right panel */}
-          <div className="lg:col-span-7 max-lg:mt-6">
+          <div className="lg:col-span-7 mt-6 lg:mt-0">
             <div className="relative w-full">
               <div className="absolute bottom-3 left-0 right-0 flex items-center justify-end gap-2">
                   {resumeData.public && (
